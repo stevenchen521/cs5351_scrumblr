@@ -1,6 +1,6 @@
 /**************
  SYSTEM INCLUDES
-*************222*/
+**************/
 var	http = require('http');
 var sys = require('sys');
 var	async = require('async');
