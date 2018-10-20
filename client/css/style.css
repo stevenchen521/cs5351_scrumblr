@@ -25,6 +25,12 @@ body {
 
 }
 
+.highcharts-background {
+	fill: #dcd5d1;
+	/* stroke: #a4edba; */
+	stroke-width: 8px;
+}
+
 #board {
 	position: relative;
 	background-color: #dcd5d1;
@@ -46,6 +52,24 @@ body {
 	-moz-box-shadow:inset 1px 1px 3px #999;
 	box-shadow:inset 1px 1px 3px #999;
 }
+.container {
+	display: inline-block;
+}
+
+.container1 {
+	display: inline-block;
+}
+
+.container2 {
+	display: inline-block;
+	width: 996px;
+	height: 300px;
+
+	xmargin-left: auto;
+	xmargin-right: auto;
+}
+
+
 
 .board-outline {
 	border: solid #ccc 8px;

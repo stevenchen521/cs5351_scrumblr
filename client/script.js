@@ -677,7 +677,7 @@ function adjustCard(offsets, doSync) {
 }
 
 function burnDownChart() {
-    $('.container').highcharts({
+    $('.container2').highcharts({
       title: {
         text: 'Burndown Chart',
         x: -20 //center
@@ -692,7 +692,7 @@ function burnDownChart() {
         }
       },
       subtitle: {
-        text: 'Sprint 1',
+        // text: 'Sprint 1',
         x: -20
       },
       xAxis: {
@@ -764,15 +764,15 @@ $(function() {
                 randomCardColour());
         });
     
-    $("#create-card1")
+    $("#burndown-chart")
     .click(function() {
         var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
         uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
         // alert(uniqueID);
 
-        // burnDownChart()
+        burnDownChart()
+        // var w = window.open("./test.html", "popupWindow", "width=800, height=450, scrollbars=no");
 
-        var w = window.open("./test.html", "popupWindow", "width=600, height=400, scrollbars=no");
         // var $w = $(w.document.body);
         // $w.html("<textarea></textarea>");
 

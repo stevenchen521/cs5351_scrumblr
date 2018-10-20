@@ -9,61 +9,60 @@ block body
 
 	h1 <a href="http://scrumblr.ca">scrumblr</a> by <a href="http://aliasaria.ca">aliasaria</a>
 
-	div
-		div.board-outline
-			div#board
-				div#board-doodles
-				image#marker(src='images/marker.png')
-				image#eraser(src='images/eraser.png')
+	div.container
+		div.container1
+
+			div.board-outline
+				div#board
+					div#board-doodles
+					image#marker(src='images/marker.png')
+					image#eraser(src='images/eraser.png')
+					table#board-table.board-table
+						tr
+							td#icon-col(width='1%')
+								image#add-col.col-icon(width='20', height='20', src='images/icons/iconic/raster/black/plus_alt_32x32.png')
+								image#delete-col.col-icon(width='20', height='20', src='images/icons/iconic/raster/black/minus_alt_32x32.png')
 
 
-				table#board-table.board-table
-					tr
-						td#icon-col(width='1%')
-							image#add-col.col-icon(width='20', height='20', src='images/icons/iconic/raster/black/plus_alt_32x32.png')
-							image#delete-col.col-icon(width='20', height='20', src='images/icons/iconic/raster/black/minus_alt_32x32.png')
-
-		div.container
+			div.buttons
+				i#create-card.fa.fa-plus-circle.fa-2x.bottom-icon
+				i#smallify.fa.fa-expand.fa-2x.bottom-icon
+				
 
 
-	div.buttons
-		i#create-card.fa.fa-plus-circle.fa-2x.bottom-icon
-		i#smallify.fa.fa-expand.fa-2x.bottom-icon
-		
+			div.stickers
+				i#burndown-chart.fa.fa-line-chart.fa-2x.bottom-icon
+				//- div.sticker#sticker-red
+				//- div.sticker#sticker-blue
+				//- div.sticker#sticker-yellow
+				//- div.sticker#sticker-green
+				//- br
+				//- div.sticker#sticker-pink
+				//- div.sticker#sticker-lightblue
+				//- div.sticker#sticker-orange
+				//- div.sticker#sticker-purple
+				//- //div.sticker#sticker-silverstar
+				//- //div#addsticker
+				//- br
+				//- div.sticker#nosticker
+				//br
+				//div.sticker#sticker-gold
+				//	image(src="/images/stickers/sticker-gold.png")
+				//div.sticker#sticker-bluestar
+				//	image(src="/images/stickers/sticker-bluestar.png")
+				//div.sticker#sticker-silverstar
+				//	image(src="/images/stickers/sticker-silverstar.png")
+				//div.sticker#sticker-redstar
+				//	image(src="/images/stickers/sticker-redstar.png")
 
+		div.container2
 
-	div.stickers
-		i#create-card1.fa.fa-line-chart.fa-2x.bottom-icon
-		//- div.sticker#sticker-red
-		//- div.sticker#sticker-blue
-		//- div.sticker#sticker-yellow
-		//- div.sticker#sticker-green
-		//- br
-		//- div.sticker#sticker-pink
-		//- div.sticker#sticker-lightblue
-		//- div.sticker#sticker-orange
-		//- div.sticker#sticker-purple
-		//- //div.sticker#sticker-silverstar
-		//- //div#addsticker
-		//- br
-		//- div.sticker#nosticker
-		//br
-		//div.sticker#sticker-gold
-		//	image(src="/images/stickers/sticker-gold.png")
-		//div.sticker#sticker-bluestar
-		//	image(src="/images/stickers/sticker-bluestar.png")
-		//div.sticker#sticker-silverstar
-		//	image(src="/images/stickers/sticker-silverstar.png")
-		//div.sticker#sticker-redstar
-		//	image(src="/images/stickers/sticker-redstar.png")
-
-
-	div.names
-		p connected:
-		//image#user-icon(src="/images/icons/cc/black/png/user_icon&16.png")
-		input#yourname-input
-		span.you-text (you)
-		ul#names-ul
+		div.names
+				p connected:
+				//image#user-icon(src="/images/icons/cc/black/png/user_icon&16.png")
+				input#yourname-input
+				span.you-text (you)
+				ul#names-ul
 
 	//div.trash
 	//	i.fa.fa-trash-o.fa-lg.faded-icon
