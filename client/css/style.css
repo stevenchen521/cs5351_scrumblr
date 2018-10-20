@@ -213,6 +213,10 @@ h2 {
 	float: left;
 }
 
+.bdc {
+	float: right;
+}
+
 .names {
 	padding-left: 10px;
 	width: 980px;
