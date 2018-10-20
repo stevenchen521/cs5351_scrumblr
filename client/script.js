@@ -677,7 +677,7 @@ function adjustCard(offsets, doSync) {
 }
 
 function burnDownChart() {
-    $('#container').highcharts({
+    $('.container').highcharts({
       title: {
         text: 'Burndown Chart',
         x: -20 //center
@@ -770,9 +770,9 @@ $(function() {
         uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
         // alert(uniqueID);
 
-        burnDownChart()
+        // burnDownChart()
 
-        // var w = window.open("", "popupWindow", "width=600, height=400, scrollbars=no");
+        var w = window.open("./test.html", "popupWindow", "width=600, height=400, scrollbars=no");
         // var $w = $(w.document.body);
         // $w.html("<textarea></textarea>");
 
