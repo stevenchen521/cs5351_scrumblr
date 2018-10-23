@@ -164,8 +164,11 @@ io.sockets.on('connection', function (client) {
 				clean_data.rot = scrub(data.rot);
 				clean_data.colour = scrub(data.colour);
 
+				clean_data.hours = scrub(0); //receive now hours from client(when you create it is 0)
+				clean_data.totalhours = scrub('edit total hour'); //receive totalhours from client
+				
 				getRoom(client, function(room) {
-					createCard( room, clean_data.id, clean_data.text, clean_data.x, clean_data.y, clean_data.rot, clean_data.colour);
+					createCard( room, clean_data.id, clean_data.text, clean_data.x, clean_data.y, clean_data.rot, clean_data.colour,clean_data.hours,clean_data.totalhours);
 				});
 
 				message_out = {
@@ -182,15 +185,19 @@ io.sockets.on('connection', function (client) {
 				clean_data = {};
 				clean_data.value = scrub(message.data.value);
 				clean_data.id = scrub(message.data.id);
+				clean_data.target = scrub(message.data.target);
+				clean_data.hours = scrub(message.data.hours);
+				clean_data.totalhours = scrub(message.data.totalhours);
 
 				//send update to database
 				getRoom(client, function(room) {
-					db.cardEdit( room , clean_data.id, clean_data.value );
+					db.cardEdit( room , clean_data.id, clean_data.value , clean_data.target );
 				});
 
 				message_out = {
 					action: 'editCard',
-					data: clean_data
+					data: clean_data,
+					target:clean_data.target
 				};
 
 				broadcastToRoom(client, message_out);
@@ -429,7 +436,8 @@ function broadcastToRoom ( client, message ) {
 }
 
 //----------------CARD FUNCTIONS
-function createCard( room, id, text, x, y, rot, colour ) {
+function createCard( room, id, text, x, y, rot, colour,hours,totalhours ) {
+	//var hoursprfix = 100;
 	var card = {
 		id: id,
 		colour: colour,
@@ -437,7 +445,10 @@ function createCard( room, id, text, x, y, rot, colour ) {
 		x: x,
 		y: y,
 		text: text,
-		sticker: null
+		sticker: null,
+		animationspeed: null,
+		hours: hours,
+		totalhours: totalhours,
 	};
 
 	db.createCard(room, id, card);

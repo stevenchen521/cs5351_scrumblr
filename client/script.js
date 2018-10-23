@@ -96,7 +96,7 @@ function getMessage(m) {
         case 'createCard':
             //console.log(data);
             drawNewCard(data.id, data.text, data.x, data.y, data.rot, data.colour,
-                null);
+                null,null,data.hours,data.totalhours);
             break;
 
         case 'deleteCard':
@@ -108,7 +108,9 @@ function getMessage(m) {
             break;
 
         case 'editCard':
-            $("#" + data.id).children('.content:first').text(data.value);
+            if(data.target == 0) $("#" + data.id).children('.content:first').text(data.value);
+            if(data.target == 1) $("#" + data.id).children('.hours:first').text(data.value);
+            if(data.target == 2) $("#" + data.id).children('.totalhours:first').text(data.value);            
             break;
 
         case 'initColumns':
@@ -160,9 +162,9 @@ $(document).bind('keyup', function(event) {
     keyTrap = event.which;
 });
 
-function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
+function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours ,totalhours) {
     //cards[id] = {id: id, text: text, x: x, y: y, rot: rot, colour: colour};
-
+    console.log("now let we create a card");
     var h = '<div id="' + id + '" class="card ' + colour +
         ' draggable" style="-webkit-transform:rotate(' + rot +
         'deg);\
@@ -170,6 +172,14 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
 	<img src="images/icons/token/Xion.png" class="card-icon delete-card-icon" />\
 	<img class="card-image" src="images/' +
         colour + '-card.png">\
+    <div class="padding"></div>\
+    <div id="hours:' + id +
+        '" class="hours stickertarget droppable">' +
+            hours + '</div>\
+    <div class="divide">/</div>\
+    <div id="totalhours:' + id +
+        '" class="totalhours stickertarget droppable">' +
+        totalhours + '</div>\
 	<div id="content:' + id +
         '" class="content stickertarget droppable">' +
         text + '</div><span class="filler"></span>\
@@ -287,7 +297,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
     );
 
     card.children('.content').editable(function(value, settings) {
-        onCardChange(id, value);
+        onCardChange(id, value, 0);
         return (value);
     }, {
         type: 'textarea',
@@ -299,17 +309,62 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
         event: 'dblclick', //event: 'mouseover'
     });
 
+    card.children('.hours').editable(function(value, settings) {
+        onCardChange(id, value, 1);
+        return (value);
+    }, {
+        type: 'textarea',
+        submit: 'OK',
+        style: 'inherit',
+        cssclass: 'card-edit-form',
+        placeholder: 'Now',
+        onblur: 'submit',
+        event: 'dblclick', //event: 'mouseover'
+    });
+
+    card.children('.totalhours').editable(function(value, settings) {
+        onCardChange(id, value, 2);
+        return (value);
+    }, {
+        type: 'textarea',
+        submit: 'OK',
+        style: 'inherit',
+        cssclass: 'card-edit-form',
+        placeholder: 'total',
+        onblur: 'submit',
+        event: 'dblclick', //event: 'mouseover'
+    });
+
     //add applicable sticker
     if (sticker !== null)
         addSticker(id, sticker);
 }
 
 
-function onCardChange(id, text) {
-    sendAction('editCard', {
-        id: id,
-        value: text
-    });
+function onCardChange(id, text, changetype) {
+    if (changetype == 0){
+        console.log("Now you change Text");
+        sendAction('editCard', {
+            id: id,
+            value: text,
+            target: 0
+        });
+    }else if (changetype == 1){
+        console.log("Now you change Hours");
+        sendAction('editCard', {
+            id: id,
+            value: text,
+            target: 1
+        });
+    } else if(changetype == 2){
+        console.log("Now you change totalHours");
+        sendAction('editCard', {
+            id: id,
+            value: text,
+            target: 2
+        });
+    }
+    
 }
 
 function moveCard(card, position) {
@@ -346,8 +401,8 @@ function addSticker(cardId, stickerId) {
 //----------------------------------
 // cards
 //----------------------------------
-function createCard(id, text, x, y, rot, colour) {
-    drawNewCard(id, text, x, y, rot, colour, null);
+function createCard(id, text, x, y, rot, colour, hours, totalhours) {
+    drawNewCard(id, text, x, y, rot, colour, null, null, hours, totalhours);
 
     var action = "createCard";
 
@@ -357,7 +412,9 @@ function createCard(id, text, x, y, rot, colour) {
         x: x,
         y: y,
         rot: rot,
-        colour: colour
+        colour: colour,
+        hours: hours,
+        totalhours: totalhours
     };
 
     sendAction(action, data);
@@ -390,6 +447,9 @@ function initCards(cardArray) {
             card.rot,
             card.colour,
             card.sticker,
+            null,
+            card.hours,
+            card.totalhours,
             0
         );
     }
@@ -733,9 +793,7 @@ function burnDownChart() {
         data: [100, 110, 85, 60, 60, 30, 32, 23]
       }]
     });
-  }
-
-//////////////////////////////////////////////////////////
+  }//////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
 $(function() {
@@ -761,29 +819,28 @@ $(function() {
                 '',
                 58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
                 rotation,
-                randomCardColour());
+                randomCardColour(),'','');
         });
+
+        $("#burndown-chart")
+        .click(function() {
+            var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+            uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+            // alert(uniqueID);
     
-    $("#burndown-chart")
-    .click(function() {
-        var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
-        uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
-        // alert(uniqueID);
-
-        burnDownChart()
-        // var w = window.open("./test.html", "popupWindow", "width=800, height=450, scrollbars=no");
-
-        // var $w = $(w.document.body);
-        // $w.html("<textarea></textarea>");
-
-        // createCard(
-        //     'card' + uniqueID,
-        //     '',
-        //     58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
-        //     rotation,
-        //     randomCardColour());
-    });
-
+            burnDownChart()
+            // var w = window.open("./test.html", "popupWindow", "width=800, height=450, scrollbars=no");
+    
+            // var $w = $(w.document.body);
+            // $w.html("<textarea></textarea>");
+    
+            // createCard(
+            //     'card' + uniqueID,
+            //     '',
+            //     58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
+            //     rotation,
+            //     randomCardColour());
+        });
 
     // Style changer
     $("#smallify").click(function() {
