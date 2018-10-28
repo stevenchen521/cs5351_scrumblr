@@ -166,9 +166,9 @@ io.sockets.on('connection', function (client) {
 								let hours = 0
 								Object.entries(cardHistoryObj).forEach(
 									([k, v]) => {
-										// console.log(k, v)
-										hours += parseInt(v)
-										
+										if(cardHours.get(k)){
+											hours += parseInt(v)
+										}
 									}
 								);
 								actualBurn[index++] = hoursTotal - hours
