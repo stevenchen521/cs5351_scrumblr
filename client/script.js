@@ -149,6 +149,12 @@ function getMessage(m) {
             resizeBoard(message.data);
             break;
 
+        // >>> added by steven
+        case 'sptBurndownChart':
+            sptBurndownChart(data);
+            break;
+        // <<<
+
         default:
             //unknown message
             alert('unknown action: ' + JSON.stringify(message));
@@ -736,7 +742,15 @@ function adjustCard(offsets, doSync) {
     });
 }
 
-function burnDownChart() {
+// >>> added by steven
+function sptBurndownChart(data) {
+    // var categories = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6','Day 7', 'Day 8', 'Day 9', 'Day 10']
+    // var idealBurn = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
+    // var actualBurn = [100, 110, 85, 60, 60, 30, 32, 23]
+
+    var categories = data['categories']
+    var idealBurn = data['idealBurn']
+    var actualBurn = data['actualBurn']
     $('.container2').highcharts({
       title: {
         text: 'Burndown Chart',
@@ -756,8 +770,7 @@ function burnDownChart() {
         x: -20
       },
       xAxis: {
-        categories: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6',
-                     'Day 7', 'Day 8', 'Day 9', 'Day 10']
+        categories: categories
       },
       yAxis: {
         title: {
@@ -783,17 +796,18 @@ function burnDownChart() {
         name: 'Ideal Burn',
         color: 'rgba(255,0,0,0.25)',
         lineWidth: 2,
-        data: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
+        data: idealBurn
       }, {
         name: 'Actual Burn',
         color: 'rgba(0,120,200,0.75)',
         marker: {
           radius: 6
         },
-        data: [100, 110, 85, 60, 60, 30, 32, 23]
+        data: actualBurn
       }]
     });
-  }//////////////////////////////////////////////////////////
+  }
+  //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
 $(function() {
@@ -822,25 +836,14 @@ $(function() {
                 randomCardColour(),'','');
         });
 
-        $("#burndown-chart")
-        .click(function() {
-            var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
-            uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
-            // alert(uniqueID);
-    
-            burnDownChart()
-            // var w = window.open("./test.html", "popupWindow", "width=800, height=450, scrollbars=no");
-    
-            // var $w = $(w.document.body);
-            // $w.html("<textarea></textarea>");
-    
-            // createCard(
-            //     'card' + uniqueID,
-            //     '',
-            //     58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
-            //     rotation,
-            //     randomCardColour());
-        });
+    $("#burndown-chart").click(function() {
+        var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+        uniqueID = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+
+        sendAction('sptBurndownChart', sptBurndownChart);
+        // sptBurndownChart();
+
+    });
 
     // Style changer
     $("#smallify").click(function() {

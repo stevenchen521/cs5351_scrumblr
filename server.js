@@ -10,6 +10,8 @@ var express = require('express');
 var conf = require('./config.js').server;
 var ga = require('./config.js').googleanalytics;
 
+var scrum = require('./config.js').scrum; // added by steven
+
 /**************
  LOCAL INCLUDES
 **************/
@@ -120,11 +122,82 @@ io.sockets.on('connection', function (client) {
 				initClient(client);
 				break;
 
+			// >>> added by steven
+			case 'sptBurndownChart':
+				getRoom( client, function(room) {
+					db.getAllCards( room , function (cards) {
+						var cardHours = new Map()
+						// var cardHistory = {}
+						cards.forEach( card => {
+							cardHours.set(card.id, {total:card.totalhours})
+						});
+						db.cardHistory(room,function (cardHistory){
+							var burndownData = {};
+
+							// get total hours
+							var hoursTotal = 0;
+							var hoursDay = 0;
+							cardHours.forEach((value, key) => {
+								hoursTotal += parseInt(value['total'])
+							});
+
+							// calculate idea burndown
+							var hoursDay = hoursTotal / scrum.days
+							var idealBurn = []
+							var actualBurn = []
+							var category = []
+							for (let index = 0; index < scrum.days; index++) {
+								remainHours = hoursTotal - index* hoursDay
+								if(remainHours<0)
+									break;
+								
+								category[index] = 'Day' + (index+1)
+
+								idealBurn.push(remainHours)
+								if(index == (scrum.days - 1) &&  idealBurn[index] != 0 )
+									idealBurn[index] = 0
+							}
+
+							//calculate actual burndown
+							let index = 0
+							actualBurn[index++] = hoursTotal
+							Object.keys(cardHistory).sort().forEach(function(key) {
+								cardHistoryObj = JSON.parse(cardHistory[key])
+								let hours = 0
+								Object.entries(cardHistoryObj).forEach(
+									([k, v]) => {
+										// console.log(k, v)
+										hours += parseInt(v)
+										
+									}
+								);
+								actualBurn[index++] = hoursTotal - hours
+								// index++;
+							});
+
+
+							burndownData['idealBurn'] = idealBurn
+							burndownData['categories'] = category
+							burndownData['actualBurn'] = actualBurn
+							client.json.send(
+							{
+								action: 'sptBurndownChart',
+								data: burndownData
+							}
+							);
+						})
+
+						
+			
+					});
+					// deleteCard ( room, clean_message.data.id );
+				});
+				break;
+			// <<<
+
 			case 'joinRoom':
 				joinRoom(client, message.data, function(clients) {
-
 						client.json.send( { action: 'roomAccept', data: '' } );
-
 				});
 
 				break;
@@ -331,6 +404,14 @@ io.sockets.on('connection', function (client) {
 /**************
  FUNCTIONS
 **************/
+
+// >>> added by steven
+// function 
+
+// <<<
+
+
+
 function initClient ( client )
 {
 	//console.log ('initClient Started');
@@ -469,6 +550,16 @@ function getRoom( client , callback )
 	//console.log( 'client: ' + client.id + " is in " + room);
 	callback(room);
 }
+
+// >>> added by steven
+function sptBurndownChart( client , callback )
+{
+	room = rooms.get_room( client );
+	//console.log( 'client: ' + client.id + " is in " + room);
+	callback(room);
+}
+
+// <<<
 
 
 function setUserName ( client, name )
