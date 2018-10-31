@@ -283,6 +283,13 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours
         }
     );
 
+    if((hours/totalhours)>0 &&(hours/totalhours)<0.2) card.children('.card-image').css("opacity",1);
+    if((hours/totalhours)>0.2&&(hours/totalhours)<0.4) card.children('.card-image').css("opacity",0.8);
+    if((hours/totalhours)>0.4&&(hours/totalhours)<0.6) card.children('.card-image').css("opacity",0.6);
+    if((hours/totalhours)>0.6&&(hours/totalhours)<0.8) card.children('.card-image').css("opacity",0.4);
+    if((hours/totalhours)>0.8&&(hours/totalhours)<1) card.children('.card-image').css("opacity",0.2);
+
+
     card.children('.card-icon').hover(
         function() {
             $(this).addClass('card-icon-hover');
@@ -316,11 +323,14 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours
     });
 
     card.children('.hours').editable(function(value, settings) {
-        onCardChange(id, value, 1);
+        console.log("hours: " + value + $('#'+ id).children()[5].textContent);
+        var temp1 = value;
+        var temp2 = $('#'+ id).children()[5].textContent;
+        onCardChange(id, value, 1,temp1,temp2);
         return (value);
     }, {
         type: 'textarea',
-        submit: 'OK',
+        //submit: 'OK',
         style: 'inherit',
         cssclass: 'card-edit-form',
         placeholder: 'Now',
@@ -329,11 +339,14 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours
     });
 
     card.children('.totalhours').editable(function(value, settings) {
-        onCardChange(id, value, 2);
+        console.log("hours: " + value + $('#'+ id).children()[3].textContent);
+        var temp1 = value;
+        var temp2 = $('#'+ id).children()[5].textContent;
+        onCardChange(id, value, 2,temp2,temp1);
         return (value);
     }, {
         type: 'textarea',
-        submit: 'OK',
+        //submit: 'OK',
         style: 'inherit',
         cssclass: 'card-edit-form',
         placeholder: 'total',
@@ -347,7 +360,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours
 }
 
 
-function onCardChange(id, text, changetype) {
+function onCardChange(id, text, changetype,hours,totalhours) {
     if (changetype == 0){
         console.log("Now you change Text");
         sendAction('editCard', {
@@ -370,6 +383,14 @@ function onCardChange(id, text, changetype) {
             target: 2
         });
     }
+    console.log("the opactyis :" + hours/totalhours);
+    if(hours == 0) $('#'+ id).children('.card-image').css("opacity",1);
+    else if((hours/totalhours)>0 && (hours/totalhours)<0.2) $('#'+ id).children('.card-image').css("opacity",1);
+    else if((hours/totalhours)>0.2 &&(hours/totalhours)<0.4) $('#'+ id).children('.card-image').css("opacity",0.8);
+    else if((hours/totalhours)>0.4 &&(hours/totalhours)<0.6) $('#'+ id).children('.card-image').css("opacity",0.6);
+    else if((hours/totalhours)>0.6 &&(hours/totalhours)<0.8) $('#'+ id).children('.card-image').css("opacity",0.4);
+    else if((hours/totalhours)>0.8 &&(hours/totalhours)<1) $('#'+ id).children('.card-image').css("opacity",0.2);
+
     
 }
 
