@@ -44,7 +44,7 @@
 .content {
 	overflow: hidden;
 	display: block;
-	margin: 0px 15px 0px 15px;
+	margin: -5px 15px 0px 15px;
 	font-family: 'Covered By Your Grace',"Arial Rounded MT Bold", arial, serif;
 	font-size: 12px;
 	letter-spacing: 0px;
@@ -66,35 +66,35 @@
 
 .hours {
 	overflow: hidden;
-	display: inline;
-	margin: 0px 0px 0px 44px;
+	display: inline-block;
+	margin: 0px 0px 0px 36px;
 	font-family: 'Covered By Your Grace',"Arial Rounded MT Bold", arial, serif;
 	font-size: 12px;
 	letter-spacing: 0px;
 	xtext-shadow: 0px 0px 1px #444;
 	opacity: 1;
 	color: black;
-	text-align: center;
-	padding-top: 10px;
+	text-align: right;
+	width: 20px;
 	xline-height: 16px;
 	xopacity: .8;
 }
 
 .divide{
+	overflow: hidden;
 	margin: 0px 0px 0px 0px;
-	display: inline;
+	display: inline-block;
 	font-family: 'Covered By Your Grace',"Arial Rounded MT Bold", arial, serif;
 	font-size: 12px;
-	padding-top: 10px;
+	/* padding-top: 10px; */
 }
 
 .totalhours {
 	overflow: hidden;
-	display: inline;
+	display: inline-block;
 	width: 158px;
-	height: 12px;
+	/* height: 12px; */
 	margin: 0px 0px 0px 0px;
-	padding-top: 20px;
 	font-family: 'Covered By Your Grace',"Arial Rounded MT Bold", arial, serif;
 	font-size: 12px;
 	letter-spacing: 0px;
@@ -102,7 +102,8 @@
 	opacity: 1;
 	color: black;
 	text-align: center;
-	padding-top: 10px;
+	text-align: left;
+	width: 20px;
 	xline-height: 16px;
 	xopacity: .8;
 }
