@@ -341,7 +341,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed, hours
     card.children('.totalhours').editable(function(value, settings) {
         console.log("hours: " + value + $('#'+ id).children()[3].textContent);
         var temp1 = value;
-        var temp2 = $('#'+ id).children()[5].textContent;
+        var temp2 = $('#'+ id).children()[3].textContent;
         onCardChange(id, value, 2,temp2,temp1);
         return (value);
     }, {
