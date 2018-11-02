@@ -6,3 +6,8 @@ rsync.sh
 node_modules/
 *.rdb
 *.out
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/launch.json
+.gitignore
+config.js
