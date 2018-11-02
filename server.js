@@ -142,7 +142,7 @@ io.sockets.on('connection', function (client) {
 							});
 
 							// calculate idea burndown
-							var hoursDay = hoursTotal / scrum.days
+							var hoursDay = Math.round(hoursTotal / (scrum.days-1))
 							var idealBurn = []
 							var actualBurn = []
 							var category = []
@@ -151,7 +151,7 @@ io.sockets.on('connection', function (client) {
 								if(remainHours<0)
 									break;
 								
-								category[index] = 'Day' + (index+1)
+								category[index] = 'Day' + (index)
 
 								idealBurn.push(remainHours)
 								if(index == (scrum.days - 1) &&  idealBurn[index] != 0 )
@@ -161,6 +161,7 @@ io.sockets.on('connection', function (client) {
 							//calculate actual burndown
 							let index = 0
 							actualBurn[index++] = hoursTotal
+							
 							Object.keys(cardHistory).sort().forEach(function(key) {
 								cardHistoryObj = JSON.parse(cardHistory[key])
 								let hours = 0
@@ -171,7 +172,12 @@ io.sockets.on('connection', function (client) {
 										}
 									}
 								);
-								actualBurn[index++] = hoursTotal - hours
+								if (index>0&&hours==0) {
+									index++
+								}else{
+									actualBurn[index++] = hoursTotal - hours
+								}
+								
 								// index++;
 							});
 
