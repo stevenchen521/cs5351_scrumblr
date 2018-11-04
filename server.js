@@ -243,8 +243,8 @@ io.sockets.on('connection', function (client) {
 				clean_data.rot = scrub(data.rot);
 				clean_data.colour = scrub(data.colour);
 
-				clean_data.hours = scrub(0); //receive now hours from client(when you create it is 0)
-				clean_data.totalhours = scrub('edit total hour'); //receive totalhours from client
+				clean_data.hours = scrub(data.hours); //receive now hours from client(when you create it is 0)
+				clean_data.totalhours = scrub(data.totalhours); //receive totalhours from client
 				
 				getRoom(client, function(room) {
 					createCard( room, clean_data.id, clean_data.text, clean_data.x, clean_data.y, clean_data.rot, clean_data.colour,clean_data.hours,clean_data.totalhours);

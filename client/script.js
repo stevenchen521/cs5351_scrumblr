@@ -763,6 +763,62 @@ function adjustCard(offsets, doSync) {
     });
 }
 
+//added by yuyi
+function uploadcreatnewcard(text, totalhours,height) {
+    var rotation = Math.random() * 10 - 5;
+    uniqueID = Math.round(Math.random() * 99999999);
+    createCard(
+        'card' + uniqueID,
+        text,
+        0, height, // hack - not a great way to get the new card coordinates, but most consistant ATM
+        rotation,
+        randomCardColour(),0,totalhours);
+}
+
+
+function drawuploadcolumn(){
+    onColumnChange("col-1", "story");
+    var changetext = document.getElementById("col-1");
+    changetext.innerHTML = "story";
+}
+
+
+function uploadexcel(f) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        var data = e.target.result;
+        var workbook = XLSX.read(data, { type: 'binary'});
+        //console.log(workbook);
+        var sheetNames = workbook.SheetNames;
+        var worksheet = workbook.Sheets[sheetNames[0]];
+        var csv = XLSX.utils.sheet_to_csv(worksheet);
+        var rows = csv.split('\n');
+        rows.shift();
+        rows.pop();
+        if (totalcolumns == 0) {
+            createColumn("story");
+            createColumn("new");
+        }else if (totalcolumns == 1){
+            createColumn("new");
+            drawuploadcolumn();
+        }else if (totalcolumns >= 1){
+            drawuploadcolumn();
+        }
+        rows.forEach(function(row,idx) {
+            var columns = row.split(",");
+            var height = 50 + idx * 50;
+           // if (columns[2] == '') {columns[2] == 0;}
+            uploadcreatnewcard(columns[0], columns[1], height);
+        });
+    };
+    reader.readAsBinaryString(f);
+}
+
+
+
+
+
+
 // >>> added by steven
 function sptBurndownChart(data) {
     // var categories = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6','Day 7', 'Day 8', 'Day 9', 'Day 10']
@@ -852,9 +908,9 @@ $(function() {
             createCard(
                 'card' + uniqueID,
                 '',
-                58, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
+                88, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
                 rotation,
-                randomCardColour(),'','');
+                randomCardColour(),0,'edit total hours');
         });
 
     $("#burndown-chart").click(function() {
@@ -884,6 +940,15 @@ $(function() {
 
         return false;
     });
+
+    $("#upload-file").change(
+        function() {
+            var f = this.files[0];
+            console.log(f);
+            uploadexcel(f);
+            this.value = '';
+        }
+    );
 
 
 
