@@ -910,7 +910,7 @@ $(function() {
                 '',
                 88, $('div.board-outline').height(), // hack - not a great way to get the new card coordinates, but most consistant ATM
                 rotation,
-                randomCardColour(),0,'edit total hours');
+                randomCardColour(),'Now','Total');
         });
 
     $("#burndown-chart").click(function() {
