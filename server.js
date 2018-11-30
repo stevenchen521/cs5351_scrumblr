@@ -234,6 +234,9 @@ io.sockets.on('connection', function (client) {
 				break;
 
 			case 'createCard':
+			// >>> added by Steven
+				// testCardTimeInsert();
+			// <<< 
 				data = message.data;
 				clean_data = {};
 				clean_data.text = scrub(data.text);
@@ -412,7 +415,30 @@ io.sockets.on('connection', function (client) {
 **************/
 
 // >>> added by steven
-// function 
+function testCardTimeInsert() {
+    card = {
+        "id":"card95500055",
+        "colour":"blue",
+        "rot": '-3.340326417016475',
+        "x":'316.5327377319336',
+        "y":'123.85032653808594',
+        "text": "" ,
+        "sticker":null,
+        "animationspeed":null,
+        "hours":"15",
+        "totalhours":"20"
+    }
+    db.createCard('demo', 'card95500055', card)
+    db.getAllCards( 'demo' , function (cards) {
+        cards.forEach(card => {
+            if(card['id'] == 'card95500055' && card['hours'] == '15' )
+                return true
+            else  
+                return false
+        });
+    });
+}
+
 
 // <<<
 
@@ -540,6 +566,7 @@ function createCard( room, id, text, x, y, rot, colour,hours,totalhours ) {
 
 	db.createCard(room, id, card);
 }
+
 
 function roundRand( max )
 {

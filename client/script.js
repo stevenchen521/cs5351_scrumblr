@@ -152,6 +152,7 @@ function getMessage(m) {
         // >>> added by steven
         case 'sptBurndownChart':
             sptBurndownChart(data);
+            // testSptBurndownChart();  "for testing purpose
             break;
         // <<<
 
@@ -815,7 +816,14 @@ function uploadexcel(f) {
 }
 
 
+function testSptBurndownChart() {
+    var data = {}
+    data['categories'] = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6','Day 7', 'Day 8', 'Day 9', 'Day 10']
+    data['idealBurn'] = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
+    data['actualBurn'] = [100, 110, 85, 60, 60, 30, 32, 23]
 
+    script.sptBurndownChart(data)
+}
 
 
 
